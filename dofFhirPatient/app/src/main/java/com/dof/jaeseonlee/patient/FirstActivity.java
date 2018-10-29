@@ -19,8 +19,8 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
 
         /* POINT - : Glide */
-       // final ImageView mBgImageView = (ImageView) findViewById(R.id.iv_FirstBg);
-       // Glide.with(this).load(R.drawable.bg_background).into(mBgImageView);
+       // final ImageView mBgImageView = (ImageView) findViewById(R.id.firstImage);
+       // Glide.with(this).load(R.drawable.bg_background).into(firstImagePic);
 
         waitTask = new TimerTask() {
             @Override
