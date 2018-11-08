@@ -3,7 +3,6 @@ package com.dof.jaeseonlee.patient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,9 +17,6 @@ public class FirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        /* POINT - : Glide */
-       // final ImageView mBgImageView = (ImageView) findViewById(R.id.firstImage);
-       // Glide.with(this).load(R.drawable.bg_background).into(firstImagePic);
 
         waitTask = new TimerTask() {
             @Override

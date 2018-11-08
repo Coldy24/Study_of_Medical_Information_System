@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:title="@string/setting_kor">
+    </PreferenceScreen>
+
+    <PreferenceCategory android:title="@string/user_info_kor">
+
+        <PreferenceScreen
+            android:id="@+id/userName"
+            android:key="User Name"
+            android:title="사용자 이름"
+            android:summary="사용자의 이름을 입력합니다."
+            >
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:id="@+id/userAge"
+            android:key="User Age"
+            android:title="사용자 나이"
+            android:summary="사용자 나이를 입력합니다."
+            >
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:id="@+id/userGender"
+            android:key="User Gender"
+            android:title="사용자 성별"
+            android:summary="사용자 성별을 선택합니다."
+            >
+
+        </PreferenceScreen>
+
+        <SwitchPreference
+            android:id="@+id/userSmoking"
+            android:defaultValue="false"
+            android:key="User Smoking"
+            android:title="사용자 흡연여부"
+            android:summary="사용자의 흡연여부를 선택합니다.(흡연시 체크)" >
+
+
+        </SwitchPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/care_info_kor">
+        <PreferenceScreen
+            android:id="@+id/careName"
+            android:key="Protector Name"
+            android:title="보호자 이름"
+            android:summary="보호자의 이름을 입력합니다."
+            >
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:id="@+id/carePhone"
+            android:key="Protector Phone"
+            android:title="보호자 전화번호"
+            android:summary="보호자의 전화번호를 입력합니다."
+            >
+
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/programmer_info_kor">
+        <PreferenceScreen
+            android:key="Developer Info"
+            android:title="개발자 정보"
+            android:summary="개발자의 정보를 확인합니다."
+            >
+
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>
