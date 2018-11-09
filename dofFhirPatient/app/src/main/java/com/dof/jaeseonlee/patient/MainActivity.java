@@ -16,6 +16,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private LogFragment logFragment;
     private SettingActivity settingActivity;
 
+    public static int hrm;
+    public static String CarePhoneNum;
+    public static String PatientName;
+    public static String PatientGender;
+    public static String PatientTelecom;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("jsjs","으익으익들어옴");
         super.onCreate(savedInstanceState);
@@ -59,7 +66,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-
+    private void getSettingData(){
+        //sharedPreferences.getString()
+    }
 
 
 }

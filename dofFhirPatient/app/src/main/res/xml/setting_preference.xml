@@ -6,34 +6,36 @@
 
     <PreferenceCategory android:title="@string/user_info_kor">
 
-        <PreferenceScreen
+        <EditTextPreference
             android:id="@+id/userName"
             android:key="User Name"
             android:title="사용자 이름"
             android:summary="사용자의 이름을 입력합니다."
             >
 
-        </PreferenceScreen>
+        </EditTextPreference>
 
-        <PreferenceScreen
+
+        <EditTextPreference
             android:id="@+id/userAge"
             android:key="User Age"
+            android:numeric="integer"
             android:title="사용자 나이"
             android:summary="사용자 나이를 입력합니다."
             >
 
-        </PreferenceScreen>
+        </EditTextPreference>
 
-        <PreferenceScreen
+        <EditTextPreference
             android:id="@+id/userGender"
             android:key="User Gender"
             android:title="사용자 성별"
             android:summary="사용자 성별을 선택합니다."
             >
 
-        </PreferenceScreen>
+        </EditTextPreference>
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:id="@+id/userSmoking"
             android:defaultValue="false"
             android:key="User Smoking"
@@ -41,7 +43,7 @@
             android:summary="사용자의 흡연여부를 선택합니다.(흡연시 체크)" >
 
 
-        </SwitchPreference>
+        </CheckBoxPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/care_info_kor">
         <PreferenceScreen
@@ -53,14 +55,15 @@
 
         </PreferenceScreen>
 
-        <PreferenceScreen
+        <EditTextPreference
             android:id="@+id/carePhone"
             android:key="Protector Phone"
+            android:numeric="integer"
             android:title="보호자 전화번호"
             android:summary="보호자의 전화번호를 입력합니다."
             >
 
-        </PreferenceScreen>
+        </EditTextPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/programmer_info_kor">
