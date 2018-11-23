@@ -16,10 +16,11 @@ public class SettingActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
-        Log.v("으잉으잉","seeingActivity 들어옴");
+
         setContentView(R.layout.activity_setting);
 
         getFragmentManager().beginTransaction().replace(R.id.settingFrame, new SettingPreference()).commit();
     }
+
 
 }

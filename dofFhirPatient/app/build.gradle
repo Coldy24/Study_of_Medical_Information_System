@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.dof.jaeseonlee.patient"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -20,6 +20,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
@@ -35,11 +37,9 @@ dependencies {
     //glide //
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-
     //hapi fhir for android//
-    implementation "ca.uhn.hapi.fhir:hapi-fhir-android:3.1.0"
-    implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:3.1.0"
-
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-android:3.1.0'
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:3.1.0'
     //ted permission//
     implementation 'gun0912.ted:tedpermission:2.2.2'
 }

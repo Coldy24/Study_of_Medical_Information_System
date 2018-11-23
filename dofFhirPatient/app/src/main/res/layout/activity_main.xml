@@ -13,33 +13,56 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
+
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="60dp">
 
         <Button
             android:id="@+id/homeButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorSkyGrayType"
             android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="홈"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhiteType"
+            android:gravity="center"
+            android:textSize="25dp"
 
             />
         <Button
             android:id="@+id/logButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorSkyGrayType"
             android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="로그"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhiteType"
+            android:gravity="center"
+            android:textSize="25dp"
 
             />
         <Button
             android:id="@+id/settingButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-
+            android:background="@color/colorSkyGrayType"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="설정"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhiteType"
+            android:gravity="center"
+            android:textSize="25dp"/>
 
 
     </LinearLayout>

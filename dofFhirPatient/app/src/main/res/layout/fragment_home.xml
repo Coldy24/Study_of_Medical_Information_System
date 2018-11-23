@@ -15,33 +15,75 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:layout_margin="3dp">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/homeStatusPicture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1.5"
+                android:background="@drawable/none"
+                android:layout_margin="3dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="1">
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text = "보호자 정보"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/mainCareName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_margin="2dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text = "심박수"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:gravity="center_vertical"
+                        android:textSize="20dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/mainHRMView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_weight="0.7"/>
 
-                <TextView
-                    android:id="@+id/mainCarePhone"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_margin="2dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text = "보호자\n연락처"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/mainCarePhoneNumView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_weight="0.7"/>
+
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
 
@@ -49,30 +91,247 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_weight="4">
+            android:layout_weight="4"
+            android:layout_margin="5dp">
 
             <Button
-                android:id="@+id/homeRefreshInfo"
+                android:id="@+id/homeBluetoothDeviceConnectionButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="심박측정"/>
+                android:text="디바이스연결"
+                android:textStyle="bold"
+                android:background="@color/colorGreenType"
+                android:textColor="@color/colorSkyBlueType"
+                android:layout_margin="3dp"
+                />
+
+            <Button
+                android:id="@+id/homeHRMCheckButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="심박측정"
+                android:textStyle="bold"
+                android:background="@color/colorBlueType"
+                android:textColor="@color/colorSkyBlueType"
+                android:layout_margin="3dp"/>
 
             <Button
                 android:id="@+id/homeCallButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="보호자 전화"/>
+                android:text="보호자 전화"
+                android:textStyle="bold"
+                android:background="@color/colorRedType"
+                android:textColor="@color/colorSkyBlueType"
+                android:layout_margin="3dp"/>
 
         </LinearLayout>
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"/>
+            android:layout_weight="2">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="3dp"
+                android:background="#fff">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 나이"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeAge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 흡연여부"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeSmoking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 혈액형"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeBloodType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 신장"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeHeigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 체중"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeWeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 질병"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeDisease"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 복용중인약"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeMedicine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="  * 기타사항"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/homeEct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

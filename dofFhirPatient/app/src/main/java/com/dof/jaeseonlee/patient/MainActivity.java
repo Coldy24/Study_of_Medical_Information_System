@@ -1,5 +1,7 @@
 package com.dof.jaeseonlee.patient;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +14,13 @@ import android.widget.Button;
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private Context mContext = MainActivity.this;
-    private HomeFragment homeFragment;
+   // private HomeFragment homeFragment;
     private LogFragment logFragment;
     private SettingActivity settingActivity;
+
+
+
+
 
     public static int hrm;
     public static String CarePhoneNum;
@@ -23,12 +29,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public static String PatientTelecom;
 
 
+
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("jsjs","으익으익들어옴");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        homeFragment = new HomeFragment();
+        //homeFragment = new HomeFragment();
         logFragment = new LogFragment();
         settingActivity = new SettingActivity();
 
@@ -46,10 +52,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Log.v("jsjs","으익으익 온클릭");
         switch (view.getId()){
             case R.id.homeButton: {
-                transaction.replace(R.id.mainLayoutContainer,homeFragment);
+               // transaction.replace(R.id.mainLayoutContainer,homeFragment);
                 break;
             }
             case R.id.logButton:{
@@ -57,7 +62,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             }
             case R.id.settingButton:{
-                Log.v("재선재선재선","으익으익 클릭");
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
                 break;
@@ -65,10 +69,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-
     private void getSettingData(){
-        //sharedPreferences.getString()
+        sharedPreferences.getString(CarePhoneNum,"값 없음");
     }
+
+
+
 
 
 }
