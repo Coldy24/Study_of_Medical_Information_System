@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-/* create 이재선, 2018-11-01 */
+/**
+ * Created by 이재선 on 2018-11-01.
+ */
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private Context mContext = MainActivity.this;

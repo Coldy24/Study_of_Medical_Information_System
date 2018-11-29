@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
-/* create 이재선, 2018-10-29 */
+/**
+ * Created by 이재선 on 2018-10-29.
+ */
 public class FirstActivity extends AppCompatActivity {
     private TimerTask waitTask;
     private Timer timer;

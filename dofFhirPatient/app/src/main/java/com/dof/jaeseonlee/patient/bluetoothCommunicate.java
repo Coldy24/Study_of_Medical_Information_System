@@ -5,7 +5,9 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
 import java.util.logging.Handler;
-
+/**
+ * Created by 이재선 on 2018-11-11.
+ */
 public class bluetoothCommunicate {
     private BluetoothAdapter bluetoothAdapter;
     private boolean scanning;
