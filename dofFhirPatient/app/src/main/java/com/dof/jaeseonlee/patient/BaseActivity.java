@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-/* create 이재선, 2018-10-29 */
+/**
+ * Created by 이재선 on 2018-10-29.
+ */
 public class BaseActivity extends AppCompatActivity {
 
 

@@ -84,6 +84,8 @@
     <string name="care_info_kor">보호자 정보</string>
     <string name="programmer_info_kor">개발자 정보</string>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="user_Birth_Date">사용자 생년월일</string>
+    <string name="user_Gender">사용자 성별</string>
 
 
 </resources>
