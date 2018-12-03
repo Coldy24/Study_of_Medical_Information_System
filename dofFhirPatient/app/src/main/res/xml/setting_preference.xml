@@ -24,33 +24,40 @@
 
         </EditTextPreference>
 
-        <EditTextPreference
-            android:id="@+id/userBirthday"
-            android:key="User BirthDay"
-            android:title="사용자 생년월일"
-            android:summary="사용자 생년월일을 입력합니다."
-            >
 
-        </EditTextPreference>
 
-        <PreferenceScreen
+        <ListPreference
             android:id="@+id/userGender"
+            android:entries="@array/array_gender_list"
+            android:entryValues="@array/array_gender_list"
             android:key="User Gender"
             android:title="사용자 성별"
             android:summary="사용자 성별을 선택합니다."
             >
 
-        </PreferenceScreen>
+        </ListPreference>
 
-        <SwitchPreference
+        <EditTextPreference
+            android:id="@+id/userBirthday"
+            android:key="User BirthDay"
+            android:title="사용자 생년월일"
+            android:summary="사용자 생년월일을 입력합니다(format:yyyy-mm-dd)."
+            >
+
+        </EditTextPreference>
+
+
+        <!--<ListPreference
             android:id="@+id/userSmoking"
-            android:defaultValue="false"
+            android:entries="@array/array_smoking_list"
+            android:entryValues="@array/array_smoking_list"
             android:key="User Smoking"
             android:title="사용자 흡연여부"
-            android:summary="사용자의 흡연여부를 선택합니다.(흡연시 체크)" >
+            android:summary="사용자의 흡연여부를 선택합니다." >
 
+        </ListPreference>
+-->
 
-        </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/care_info_kor">
         <EditTextPreference

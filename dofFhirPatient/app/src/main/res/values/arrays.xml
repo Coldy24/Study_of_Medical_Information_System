@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_gender_list">
+        <item>남</item>
+        <item>여</item>
+    </string-array>
+
+    <string-array name="array_smoking_list">
+        <item>매일흡연</item>
+        <item>가끔흡연</item>
+        <item>과거흡연(현재금연)</item>
+        <item>흡연경험없음</item>
+    </string-array>
+
+</resources>
+

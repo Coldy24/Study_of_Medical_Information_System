@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -16,12 +17,13 @@ import java.util.TimeZone;
 /**
  * Created by 이재선 on 2018-11-06.
  */
-public class SettingPreference extends PreferenceFragment  implements  SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
+public class SettingPreferenceFragment extends PreferenceFragment  implements  SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
     private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting_preference);
+
         context = getPreferenceScreen().getContext();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
@@ -43,6 +45,16 @@ public class SettingPreference extends PreferenceFragment  implements  SharedPre
             }
         });
         alertDialogBuilder.show();
+
+        /*if(key.equals("sound_list")){
+            soundPreference.setSummary(prefs.getString("sound_list", "카톡"));
+        }
+
+        if(key.equals("keyword_sound_list")){
+            keywordSoundPreference.setSummary(prefs.getString("keyword_sound_list", "카톡"));
+        }*/
+
+
 
     }
 

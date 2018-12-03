@@ -1,27 +1,25 @@
 package com.dof.jaeseonlee.patient;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.preference.PreferenceFragment;
 import android.util.Log;
-import android.view.View;
+
 /**
  * Created by 이재선 on 2018-11-06.
  */
-public class SettingActivity extends BaseActivity{
+public class SettingActivity extends PreferenceFragment{
 
-    public Context context= SettingActivity.this;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-
+    public void onCreate(Bundle savedInstanceState){
+        Log.e("hello","여기까지됨1111");
         super.onCreate(savedInstanceState);
+        Log.e("hello","여기까지됨2222");
+        Log.e("hello","여기까지됨3333");
+      //  setContentView(R.layout.activity_setting);
 
-        setContentView(R.layout.activity_setting);
-
-        getFragmentManager().beginTransaction().replace(R.id.settingFrame, new SettingPreference()).commit();
+        Log.e("hello","여기까지됨4444");
+        Log.e("hello","여기까지됨5555");
+        getFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new SettingPreferenceFragment()).commit();
     }
 
 

@@ -2,15 +2,17 @@ package com.dof.jaeseonlee.patient;
 
 import android.os.AsyncTask;
 
-import java.util.Date;
 
-import ca.uhn.fhir.model.dstu2.resource.Bundle;
-import ca.uhn.fhir.model.dstu2.resource.Device;
-import ca.uhn.fhir.model.dstu2.resource.DeviceComponent;
-import ca.uhn.fhir.model.dstu2.resource.DeviceMetric;
-import ca.uhn.fhir.model.dstu2.resource.Observation;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
-import ca.uhn.fhir.model.dstu2.valueset.BundleTypeEnum;
+import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Observation.*;
+import org.hl7.fhir.dstu3.model.Device.*;
+
+
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+import ca.uhn.fhir.context.FhirContext;
 
 /**
  * Created by 이재선 on 2018-11-26.
@@ -18,7 +20,6 @@ import ca.uhn.fhir.model.dstu2.valueset.BundleTypeEnum;
 
 public class dataToFhirResources{
     String serverAddress;
-    //Patient patient = new
     Bundle bundle = new Bundle();
     Device device = new Device();
     DeviceComponent deviceComponent1 = new DeviceComponent();
@@ -45,7 +46,7 @@ if(PhoneNum.startsWith("+82")){
 
 
 
-
+    /* 생성자 */
     /*public dataToFhirResources(String fam,String giv,String phone,boolean isMan,Date birth, int sys, int dia, int mean,String svrAddress){
         serverAddress = svrAddress;
         makeBundle();
@@ -56,54 +57,55 @@ if(PhoneNum.startsWith("+82")){
         makeObservation(sys, dia, mean);
     }*/
 
-    /*
+
     public void makeBundle(){
-        bundle.setType(BundleTypeEnum.TRANSACTION);
+        bundle.setType(Bundle.BundleType.TRANSACTION);
     }
 
     public void makePatient(String fam, String giv, String phone, boolean isMan, Date birth){
         patient.addIdentifier()
-                .setSystem("http:www.knu.ac.kr")
-                .setValue("KNU003");
+                .setSystem("http://www.knu.ac.kr")
+                .setValue("KNU0001");
         patient.setActive(true);
 
         patient.addName()
-                .setUse(NameUse.USUAL)
+                .setUse(HumanName.NameUse.USUAL)
                 .setFamily(fam)
                 .addGiven(giv);
 
         patient.addTelecom()
-                .setSystem(ContactPointSystem.PHONE)
+                .setSystem(ContactPoint.ContactPointSystem.PHONE)
                 .setValue(phone)
-                .setUse(ContactPointUse.HOME);
+                .setUse(ContactPoint.ContactPointUse.HOME);
 
-        patient.setGender(isMan?AdministrativeGender.MALE : AdministrativeGender.FEMALE);
+        patient.setGender(isMan?Enumerations.AdministrativeGender.MALE : Enumerations.AdministrativeGender.FEMALE);
         patient.setBirthDate(birth);
+
 
         bundle.addEntry()
                 .setFullUrl("urn:uuid:" + UUID.randomUUID().toString())
                 .setResource(patient)
                 .getRequest()
-                .setUrl("Patient")
-                .setMethod(HTTPVerb.POST);
+                .setUrl("Patient");
     }
 
     public void makeDevice(){
         device.addIdentifier()
-                .setSystem("http:www.vanila.co.kr")
+                .setSystem("http://www.jaeseon.co.kr")
                 .setValue("device001");
 
-        device.setStatus(FHIRDeviceStatus.ACTIVE);
+        device.setStatus(Device.FHIRDeviceStatus.ACTIVE);
         device.setId("1");
+
         CodeableConcept codeableConcept = new CodeableConcept();
         codeableConcept.addCoding().setSystem("urn:iso:std:iso:11073:10101")
                 .setCode("4172")
                 .setDisplay("MDC_DEV_ANALY_PRESS_BLD");
         device.setType(codeableConcept);
-        device.setLotNumber("20150301001");
-        device.setManufacturer("VANILLA");
-        device.setManufactureDate(new Date(1985,1,1));
-        device.setModel("BPM01");
+        device.setLotNumber("20181130001");
+        device.setManufacturer("Co.Jaeseon");
+        device.setManufactureDate(new Date(2018,11,1));
+        device.setModel("HRM01");
         device.setPatient(new Reference("p1"));
 
         //.setFullUrl("Device/" + UUID.randomUUID().toString())
@@ -112,22 +114,23 @@ if(PhoneNum.startsWith("+82")){
                 .setFullUrl("urn:uuid:" + UUID.randomUUID().toString())
                 .setResource(device)
                 .getRequest()
-                .setUrl("device")
-                .setMethod(HTTPVerb.POST);
+                .setUrl("device");
     }
 
     public void makeDeviceComponent(){
         Identifier identifier = new Identifier();
-        identifier.setSystem("http:www.vanila.co.kr")
+        identifier.setSystem("http://www.jaeseon.co.kr")
                 .setValue("mds001");
+
         deviceComponent1.setIdentifier(identifier);
         deviceComponent1.setId("DeviceComponent/1");
+
         CodeableConcept codeableConcept = new CodeableConcept();
         codeableConcept.addCoding().setSystem("urn:iso:std:iso:11073:10101")
-                .setCode("4173")
-                .setDisplay("MDC_DEV_ANALY_PRESS_BLD_MDS");
+                .setCode("1234")
+                .setDisplay("MDC_BLD_PLUS_RATE");
         deviceComponent1.setType(codeableConcept);
-        deviceComponent1.setLastSystemChange(new Date(1985,1,1));
+        deviceComponent1.setLastSystemChange(new Date(2018,12,3));
         Reference reference = new Reference(bundle.getEntry().get(1).getFullUrl());
         deviceComponent1.setSource(reference);
 
@@ -142,8 +145,7 @@ if(PhoneNum.startsWith("+82")){
                 .setFullUrl("urn:uuid:" + UUID.randomUUID().toString())
                 .setResource(deviceComponent1)
                 .getRequest()
-                .setUrl("DeviceComponent")
-                .setMethod(HTTPVerb.POST);
+                .setUrl("DeviceComponent");
     }
 
     public void makeDeviceMetric(){
@@ -154,43 +156,42 @@ if(PhoneNum.startsWith("+82")){
 
         CodeableConcept typeCodeableConcept = new CodeableConcept();
         typeCodeableConcept.addCoding().setSystem("https://rtmms.nist.gov")
-                .setCode("150020")
-                .setDisplay("MDC_PRESS_BLD_NONINV");
+                .setCode("1234")
+                .setDisplay("MDC_BLD_PLUS_RATE");
         deviceMetric.setType(typeCodeableConcept);
 
         CodeableConcept unitCodeableConcept = new CodeableConcept();
         unitCodeableConcept.addCoding()
                 .setSystem("https://rtmms.nist.gov")
-                .setCode("266016")
-                .setDisplay("MDC_DIM_MMHG");
+                .setCode("33232")
+                .setDisplay("MDC_HRM_RATE");
         deviceMetric.setUnit(unitCodeableConcept);
 
         //1은 Device 4는 CHAN DeviceComponent
         deviceMetric.setSource(new Reference(bundle.getEntry().get(1).getFullUrl()));
         deviceMetric.setParent(new Reference(bundle.getEntry().get(4).getFullUrl()));
 
-        deviceMetric.setOperationalStatus(DeviceMetricOperationalStatus.ON);
-        deviceMetric.setCategory(DeviceMetricCategory.MEASUREMENT);
+        deviceMetric.setOperationalStatus(DeviceMetric.DeviceMetricOperationalStatus.ON);
+        deviceMetric.setCategory(DeviceMetric.DeviceMetricCategory.MEASUREMENT);
 
         bundle.addEntry()
                 .setFullUrl("urn:uuid:" + UUID.randomUUID().toString())
                 .setResource(deviceMetric)
                 .getRequest()
-                .setUrl("DeviceMetric")
-                .setMethod(HTTPVerb.POST);
+                .setUrl("DeviceMetric");
     }
 
     public void makeObservation(int sys, int dia, int mean){
         Identifier identifier = new Identifier();
         identifier.setSystem("http://www.knu.ac.kr")
-                .setValue("bpm001");
+                .setValue("hrm001");
         observation.addIdentifier(identifier);
         observation.setStatus(ObservationStatus.REGISTERED);
 
         CodeableConcept CodeableConcept = new CodeableConcept();
         CodeableConcept.addCoding().setSystem("https://rtmms.nist.gov")
-                .setCode("150020")
-                .setDisplay("MDC_PRESS_BLD_NONINV");
+                .setCode("33232")
+                .setDisplay("MDC_HRM_RATE");
         observation.setCode(CodeableConcept);
 
         //0은 Patient
@@ -206,46 +207,21 @@ if(PhoneNum.startsWith("+82")){
 
         Quantity sysValue = new Quantity();
         sysValue.setValue(sys).
-                setUnit("mm[Hg]");
+                setUnit("/M");
         CodeableConcept compoCode1 = new CodeableConcept();
         compoCode1.addCoding()
                 .setSystem("https://rtmms.nist.gov")
-                .setCode("150021")
-                .setDisplay("MDC_PRESS_BLD_NONINV_SYS");
-        ObservationComponentComponent compo1 = observation.addComponent();
+                .setCode("33232")
+                .setDisplay("MDC_HRM_RATE");
+        Observation.ObservationComponentComponent compo1 = observation.addComponent();
         compo1.setCode(compoCode1)
                 .setValue(sysValue);
-
-        Quantity diaValue = new Quantity();
-        diaValue.setValue(dia).
-                setUnit("mm[Hg]");
-        CodeableConcept compoCode2 = new CodeableConcept();
-        compoCode2.addCoding()
-                .setSystem("https://rtmms.nist.gov")
-                .setCode("150022")
-                .setDisplay("MDC_PRESS_BLD_NONINV_DIA");
-        ObservationComponentComponent compo2 = observation.addComponent();
-        compo2.setCode(compoCode2)
-                .setValue(diaValue);
-
-        Quantity meanValue = new Quantity();
-        meanValue.setValue(mean).
-                setUnit("mm[Hg]");
-        CodeableConcept compoCode3 = new CodeableConcept();
-        compoCode3.addCoding()
-                .setSystem("https://rtmms.nist.gov")
-                .setCode("150023")
-                .setDisplay("MDC_PRESS_BLD_NONINV_MEAN");
-        ObservationComponentComponent compo3 = observation.addComponent();
-        compo3.setCode(compoCode3)
-                .setValue(meanValue);
 
         bundle.addEntry()
                 .setFullUrl("urn:uuid:" + UUID.randomUUID().toString())
                 .setResource(observation)
                 .getRequest()
-                .setUrl("Observation")
-                .setMethod(HTTPVerb.POST);
+                .setUrl("Observation");
     }
 
     //getter and setter
@@ -267,24 +243,13 @@ if(PhoneNum.startsWith("+82")){
     public void setComponent1(DeviceComponent component1) {
         this.deviceComponent1 = component1;
     }
-    public DeviceComponent getComponent2() {
-        return deviceComponent2;
-    }
-    public void setComponent2(DeviceComponent component2) {
-        this.deviceComponent2 = component2;
-    }
-    public DeviceComponent getComponent3() {
-        return deviceComponent3;
-    }
-    public void setComponent3(DeviceComponent component3) {
-        this.deviceComponent3 = component3;
-    }
     public DeviceMetric getDeviceMetric() {
         return deviceMetric;
     }
     public void setDeviceMetric(DeviceMetric deviceMetric) {
         this.deviceMetric = deviceMetric;
     }
+
     public Observation getObservation() {
         return observation;
     }
@@ -297,7 +262,7 @@ if(PhoneNum.startsWith("+82")){
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
-
+    /*
     public void POSTMessage(){
         // Log the request
         FhirContext ctx = FhirContext.forDstu3();

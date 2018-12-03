@@ -12,7 +12,6 @@ public class BaseActivity extends AppCompatActivity {
 
     protected SharedPreferences sharedPreferences = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +21,6 @@ public class BaseActivity extends AppCompatActivity {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         }
-        //setContentView(R.layout.activity_main);
-
-        /*homeFragment = new HomeFragment();
-        logFragment = new LogFragment();
-        settingActivity = new SettingActivity();*/
 
     }
 }
