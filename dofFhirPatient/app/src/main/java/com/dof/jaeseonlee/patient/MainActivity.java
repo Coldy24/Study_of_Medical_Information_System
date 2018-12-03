@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -91,6 +92,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.settingButton:{
                 getFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new SettingPreferenceFragment()).commit();
             }
+
         }
     }
 
@@ -118,37 +120,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         String givenName;
         String gender;
         String birthDate;
-        boolean smoking;
+        //boolean smoking;
 
         String careName;
         String carePhoneNum;
 
+        familyName = sharedPreferences.getString("User Family Name","");
+        givenName = sharedPreferences.getString("User Given Name","");
+        gender = sharedPreferences.getString("User Gender","");
+        birthDate = sharedPreferences.getString("User BirthDay","");
+        carePhoneNum=sharedPreferences.getString("Protector Phone","010-1234-5678");
 
 
 
     }
 
-
-
-    /*
-
-      if(!prefs.getString("sound_list", "").equals("")){
-            soundPreference.setSummary(prefs.getString("sound_list", "카톡"));
-        }
-
-        if(!prefs.getString("keyword_sound_list", "").equals("")){
-            keywordSoundPreference.setSummary(prefs.getString("keyword_sound_list", "카톡"));
-        }
-
-        if(prefs.getBoolean("keyword", false)){
-            keywordScreen.setSummary("사용");
-        }
-
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
-
-
-
-     */
 
 
 }
