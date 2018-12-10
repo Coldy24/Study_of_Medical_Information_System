@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.client.api.IGenericClient;
 
 /**
  * Created by 이재선 on 2018-11-26.
@@ -28,34 +29,27 @@ public class dataToFhirResources{
     Patient patient = new Patient();
 
 
-
-
-
     /*
     TelephonyManager telManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 PhoneNum = telManager.getLine1Number();
 if(PhoneNum.startsWith("+82")){
     PhoneNum = PhoneNum.replace("+82", "0");
 }
-
-
-
-
      */
 
 
 
 
     /* 생성자 */
-    /*public dataToFhirResources(String fam,String giv,String phone,boolean isMan,Date birth, int sys, int dia, int mean,String svrAddress){
-        serverAddress = svrAddress;
+    public dataToFhirResources(String fam,String giv,String phone,boolean isMan,Date birth, int hrm){
         makeBundle();
         makePatient(fam, giv, phone, isMan, birth);
         makeDevice();
         makeDeviceComponent();
-        //makeDeviceMetric();
-        makeObservation(sys, dia, mean);
-    }*/
+        makeDeviceMetric();
+        makeObservation(hrm);
+        POSTMessage();
+    }
 
 
     public void makeBundle(){
@@ -181,7 +175,7 @@ if(PhoneNum.startsWith("+82")){
                 .setUrl("DeviceMetric");
     }
 
-    public void makeObservation(int sys, int dia, int mean){
+    public void makeObservation(int hrm){
         Identifier identifier = new Identifier();
         identifier.setSystem("http://www.knu.ac.kr")
                 .setValue("hrm001");
@@ -206,7 +200,7 @@ if(PhoneNum.startsWith("+82")){
         observation.setDevice(new Reference(bundle.getEntry().get(1).getFullUrl()));
 
         Quantity sysValue = new Quantity();
-        sysValue.setValue(sys).
+        sysValue.setValue(hrm).
                 setUnit("/M");
         CodeableConcept compoCode1 = new CodeableConcept();
         compoCode1.addCoding()
@@ -262,35 +256,15 @@ if(PhoneNum.startsWith("+82")){
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
-    /*
+
+
+
     public void POSTMessage(){
-        // Log the request
-        FhirContext ctx = FhirContext.forDstu3();
-        String bundleString =ctx.newXmlParser().setPrettyPrint(true).encodeResourceToString(bundle);
-        System.out.println(bundleString);
+        FhirContext context = FhirContext.forDstu3();
+        IGenericClient client = context.newRestfulGenericClient("http://fhirtest.uhn.ca/baseDstu3");
+        client.transaction().withBundle(bundle).execute();
+    }
 
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost(serverAddress);
-        System.out.println("Send Resource to server: " + serverAddress);
 
-        httppost.setHeader("Content-Type", "application/fhir+xml");
-        httppost.setEntity(new ByteArrayEntity(bundleString.getBytes()));
 
-        //Execute and get the response.
-        try {
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                if (entity != null) {
-                    // EntityUtils to get the response content
-                    String content =  EntityUtils.toString(entity);
-                    System.out.println("responds:"+content);
-                }
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

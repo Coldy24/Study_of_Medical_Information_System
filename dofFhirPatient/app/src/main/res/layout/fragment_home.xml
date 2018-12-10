@@ -49,7 +49,7 @@
                         android:textSize="20dp"
                         android:layout_weight="1"/>
                     <TextView
-                        android:id="@+id/mainHRMView"
+                        android:id="@+id/homeHRMView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
