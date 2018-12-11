@@ -72,7 +72,7 @@
         <EditTextPreference
             android:id="@+id/carePhone"
             android:key="Protector_Phone"
-            android:title="보호자_전화번호"
+            android:title="보호자 전화번호"
             android:phoneNumber="true"
             android:summary="보호자의 전화번호를 입력합니다."
             >

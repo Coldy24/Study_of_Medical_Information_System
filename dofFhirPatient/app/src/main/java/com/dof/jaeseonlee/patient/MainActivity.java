@@ -1,12 +1,16 @@
 package com.dof.jaeseonlee.patient;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +28,7 @@ import java.util.List;
 /**
  * Created by 이재선 on 2018-11-01.
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Context mContext = MainActivity.this;
 
@@ -33,17 +37,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private SettingPreferenceFragment settingPreferenceFragment;
 
 
-    public static int hrm;
     public static String careName;
     public static String carePhoneNum;
     public static String patientFamilyName;
     public static String patientGivenName;
     public static String patientGender;
     public static String patientBirthDate;
-    public static String patientTelecom;
+    public static String patientPhoneNumber = "010-1234-5678";
 
 
-
+    @SuppressLint("MissingPermission")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -52,6 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         logFragment = new LogFragment();
         settingPreferenceFragment = new SettingPreferenceFragment();
 
+        TelephonyManager telManager = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
 
         TedPermission.with(this)
                 .setPermissionListener(permissionListener)
@@ -67,15 +71,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
         Button homeButton, logButton, settingButton;
-        homeButton = (Button)findViewById(R.id.homeButton);
-        logButton = (Button)findViewById(R.id.logButton);
-        settingButton = (Button)findViewById(R.id.settingButton);
+        homeButton = (Button) findViewById(R.id.homeButton);
+        logButton = (Button) findViewById(R.id.logButton);
+        settingButton = (Button) findViewById(R.id.settingButton);
         homeButton.setOnClickListener(this);
         logButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
 
+
+
+        patientPhoneNumber = telManager.getLine1Number();
+        if(patientPhoneNumber.startsWith("+82")){
+            patientPhoneNumber = patientPhoneNumber.replace("+82", "0");
+        }
+
+
         getSharedData();
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment().newInstance(patientFamilyName+patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment().newInstance(patientFamilyName,patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum,patientPhoneNumber)).commit();
 
     }
 
@@ -89,18 +101,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.homeButton: {
                 getSharedData();
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer,new HomeFragment().newInstance(patientFamilyName+patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum)).commit();
-                Log.e("으익클릭","홈클릭");
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer,new HomeFragment().newInstance(patientFamilyName, patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum,patientPhoneNumber)).commit();
                 break;
             }
             case R.id.logButton:{
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new LogFragment()).commit();
-                Log.e("으익클릭","로그클릭");
                 break;
             }
             case R.id.settingButton:{
                 getFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new SettingPreferenceFragment()).commit();
-                Log.e("으익클릭","세팅클릭");
             }
         }
     }
@@ -115,6 +124,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         @Override
         public void onPermissionDenied(List<String> deniedPermissions) {
             Toast.makeText(MainActivity.this,"권한 거부됨\n" + deniedPermissions.toString(),Toast.LENGTH_SHORT).show();
+
         }
     };
 
@@ -134,7 +144,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         getSharedData();
-        Log.e("으익클릭","onResume클릭");
     }
 
 

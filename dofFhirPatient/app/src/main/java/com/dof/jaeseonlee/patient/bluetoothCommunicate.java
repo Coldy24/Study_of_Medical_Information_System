@@ -2,6 +2,8 @@ package com.dof.jaeseonlee.patient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,6 +14,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -30,10 +33,11 @@ import java.util.logging.Handler;
  * Created by 이재선 on 2018-11-11.
  * bluetooth Communication 코드 참조 : ChangYeop-Yang/Android-Health1street
  */
-public class bluetoothCommunicate extends Thread implements View.OnClickListener{
-    private BluetoothAdapter bluetoothAdapter;
-    private boolean scanning;
-    private Handler handler;
+public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
+
+    private static final int HRM_CHECK  = 0;
+    private static final int DEVICE_CONNECTION = 1;
+
 
     /* MARK - : Xiaomi Mi-Band Basic UUID */
     public static final UUID BASIC_SERVICE = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
@@ -55,8 +59,9 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
     /* MARK - : Context */
     private Context mContext = null;
 
-    /* MARK - : Activity */
-    private Activity mActivity = null;
+    private View mView;
+
+    private SQLiteClass sqLiteClass = null;
 
 
     /* MARK - : Bluetooth Instance */
@@ -69,31 +74,17 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
     private Boolean isVibrate = false;
     private Boolean isListeningHeartRate = false;
 
+    private TextView vHomeHRMTextView;
+    private ImageView vHomeHRMStatusImaveView;
+
+    private int mHeartBeatRate = 0;
+
+    private ProgressDialog mProgressDialog = null;
+
     /* MARK - : Mi-Band Manager Creator */
-    public bluetoothCommunicate(final Context mContext, final Activity mActivity) {
+    public BluetoothCommunicate(final Context mContext, final View view) {
         this.mContext = mContext;
-        this.mActivity = mActivity;
-    }
-
-    @Override
-    public void run() {
-        super.run();
-
-        /* POINT - : Bluetooth Adapter */
-        final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        final Set<BluetoothDevice> mDevice = mBluetoothAdapter.getBondedDevices();
-
-        /* POINT - : Connect Mi-Band */
-        for (final BluetoothDevice mBluetooth : mDevice) {
-            if (mBluetooth.getName() != null & mBluetooth.getName().contains(MI_NAME)) {
-                mDeviceBluetoothGatt = mBluetooth.connectGatt(mContext, true, mBluetoothGattCallback);
-                Log.e("hihihi", String.format("%s %s", mBluetooth.getAddress(), mBluetooth.getName()));
-            }
-        }
-
-        /* POINT - : Setting Button Listener */
-        aButtonList = new Button[]{(Button) mActivity.findViewById(R.id.homeHRMCheckButton), (Button) mActivity.findViewById(R.id.homeBluetoothDeviceConnectionButton), };
-        for (final Button mButton : aButtonList) { mButton.setOnClickListener(this); }
+        this.mView = view;
     }
 
     /* MARK - : Start Heart Beat Rate Method */
@@ -123,7 +114,7 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
     }
 
     /* MARK - : Start Mi-Band Vibrate Method */
-    public Boolean startBandVibrate(final Button mButton) {
+    public Boolean startBandVibrate() {
 
         final BluetoothGattCharacteristic bchar = mDeviceBluetoothGatt.getService(ALERT_NOTIFICATION_SERVICE)
                 .getCharacteristic(ALERT_NOTIFICATION_CHARACTERISTIC);
@@ -137,7 +128,7 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
     }
 
     /* MARK - : Stop Mi-Band Vibrate Method */
-    public Boolean stopBandVibrate(final Button mButton) {
+    public Boolean stopBandVibrate() {
 
         final BluetoothGattCharacteristic bchar = mDeviceBluetoothGatt.getService(ALERT_NOTIFICATION_SERVICE)
                 .getCharacteristic(ALERT_NOTIFICATION_CHARACTERISTIC);
@@ -162,13 +153,11 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
                 case (BluetoothProfile.STATE_CONNECTED) :
                 {
                     mDeviceBluetoothGatt.discoverServices();
-                    Snackbar.make(mActivity.findViewById(android.R.id.content), "Connect Xiaomi Mi-Band.", Snackbar.LENGTH_SHORT).show();
                     break;
                 }
                 case (BluetoothProfile.STATE_DISCONNECTED) :
                 {
                     mDeviceBluetoothGatt.disconnect();
-                    Snackbar.make(mActivity.findViewById(android.R.id.content), "Disconnect Xiaomi Mi-Band.", Snackbar.LENGTH_SHORT).show();
                     break;
                 }
             }
@@ -190,69 +179,114 @@ public class bluetoothCommunicate extends Thread implements View.OnClickListener
 
                 int value = 0;//convertByteToInt(characteristic.getValue());
                 for(int i=0; i<characteristic.getValue().length; i++) { value = (value << 8) | characteristic.getValue()[i]; }
-                setButtonText(aButtonList[0], String.format("%d BPM", value));
+                mHeartBeatRate = value;
+                HomeFragment.hrm = mHeartBeatRate;
 
-                final int mHeartBeatRate = value;
-
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        /* POINT - : Heart Beat Rate */
-                        final TextView mStateText = (TextView)mActivity.findViewById(R.id.homeHRMView);
-                        final ImageView mStateImage = (ImageView)mActivity.findViewById(R.id.homeStatusPicture);
-                        if (mHeartBeatRate > 50 && mHeartBeatRate < 100) { { Glide.with(mContext).load(R.drawable.normal_big).into(mStateImage); mStateText.setText("정상"); } }
-                        else if (mHeartBeatRate != 0 ) { Glide.with(mContext).load(R.drawable.danger_big).into(mStateImage); mStateText.setText("응급"); }
-                    }
-                });
             }
         }
     };
 
-    /* TODO - : Setting Button Text Method */
-    private void setButtonText(final Button mButton, final String mSting) {
 
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() { mButton.setText(mSting); }
-        });
+    @Override
+    protected void onPreExecute(){
+        sqLiteClass =  new SQLiteClass(mContext, "DataSet.db", null, 1);
+        vHomeHRMTextView = (TextView)mView.findViewById(R.id.homeHRMView);
+        vHomeHRMStatusImaveView = (ImageView)mView.findViewById(R.id.homeStatusPicture);
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage("작업 처리중...");
+        mProgressDialog.show();
+
+        super.onPreExecute();;
     }
 
-    /* TODO - : OnClick Listener Method */
+
     @Override
-    public void onClick(View view) {
-
-        /* POINT - : Button */
-        final Button mButton = (Button)view;
-
-        switch (view.getId())
-        {
-            case (R.id.homeBluetoothDeviceConnectionButton) : { isVibrate = isVibrate ? stopBandVibrate(mButton) : startBandVibrate(mButton); break; }
-
-            case (R.id.homeHRMCheckButton) :
+    protected String doInBackground(Integer... integers) {
+        Log.e("doinBackbround","읭 " + integers);
+        /* POINT - : Check Heart Beat Rate */
+        if(integers[0] == HRM_CHECK){
+            if (!isListeningHeartRate)
             {
-                /* POINT - : Check Heart Beat Rate */
-                if (!isListeningHeartRate)
-                {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                    alertDialogBuilder.setTitle("ERROR SCAN HRM");
-                    alertDialogBuilder.setMessage("Heart Beat Rate(=HRM)을 측정할 수 없습니다.").setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });;
-                    alertDialogBuilder.show();
-                    break;
-                }
+                return "SCAN_HRM_ERROR";
+            }
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                alertDialogBuilder.setTitle("심장박동수 측정");
-                alertDialogBuilder.setMessage("Heart Beat Rate(=HRM)을 측정하고 있습니다.").setCancelable(false);
-                alertDialogBuilder.show();
-                startScanHeartRate();
-                break;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+            alertDialogBuilder.setTitle("심장박동수 측정");
+            alertDialogBuilder.setMessage("Heart Beat Rate(=HRM)을 측정하고 있습니다.").setPositiveButton("확인",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialogBuilder.show();
+            startScanHeartRate();
+            return "SCAN_HRM_OK";
+        }
+
+        /* POINT - Connection Check */
+        else {
+            if (!isListeningHeartRate) {
+                /* POINT - : Bluetooth Adapter */
+                final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                final Set<BluetoothDevice> mDevice = mBluetoothAdapter.getBondedDevices();
+
+                /* POINT - : Connect Mi-Band */
+                for (final BluetoothDevice mBluetooth : mDevice) {
+                    if (mBluetooth.getName() != null & mBluetooth.getName().contains(MI_NAME)) {
+                        mDeviceBluetoothGatt = mBluetooth.connectGatt(mContext, true, mBluetoothGattCallback);
+                    }
+                }
+                return "CONNECT_DEVICE";
             }
         }
+
+        return "CONNECTED_ALREADY";
     }
 
+
+    @Override
+    protected void onPostExecute(String strings) {
+        mProgressDialog.dismiss();
+        Log.e("bluetoothCommunication", strings);
+
+
+        if(strings.equals("SCAN_HRM_OK")){
+            vHomeHRMTextView.setText(Integer.toString(mHeartBeatRate));
+
+            if (mHeartBeatRate > 50 && mHeartBeatRate < 100) {
+                Glide.with(mView).load(R.drawable.normal_big).into(vHomeHRMStatusImaveView);
+            }
+            else if (mHeartBeatRate != 0 ) {
+                Glide.with(mView).load(R.drawable.danger_big).into(vHomeHRMStatusImaveView);
+            }
+            else {
+                Glide.with(mView).load(R.drawable.none).into(vHomeHRMStatusImaveView);
+            }
+            Toast.makeText(mContext, "HRM = " + mHeartBeatRate, Toast.LENGTH_SHORT).show();
+            sqLiteClass.addDate(mHeartBeatRate,new Date());
+        }
+
+        else if(strings.equals("SCAN_HRM_ERROR")){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+            alertDialogBuilder.setTitle("ERROR SCAN HRM");
+            alertDialogBuilder.setMessage("Heart Beat Rate(=HRM)을 측정할 수 없습니다.\n연결상태를 확인해주세요.").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialogBuilder.show();
+            Toast.makeText(mContext, "심박수를 측정할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(strings.equals("CONNECT_DEVICE")){
+            Toast.makeText(mContext, "Mi-band와 연결되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        /* Point : Already Connected */
+        else{
+            Toast.makeText(mContext, "Mi-band와 이미 연결되어 있습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

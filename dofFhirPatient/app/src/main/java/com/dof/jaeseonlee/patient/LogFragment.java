@@ -1,12 +1,23 @@
 package com.dof.jaeseonlee.patient;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.util.ArrayList;
 
 
 /**
@@ -26,6 +37,18 @@ public class LogFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View mView;
+
+    private SQLiteClass sqLiteClass;
+    private String dbName = " DataSet.db";
+    private int dbVersion = 1; // 데이터베이스 버전
+    private SQLiteDatabase db;
+
+    LineChart vLineChart;
+
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,14 +80,40 @@ public class LogFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log, container, false);
+        mView = inflater.inflate(R.layout.fragment_log, container, false);
+
+        vLineChart = (LineChart)mView.findViewById(R.id.chart);
+
+        try{
+            sqLiteClass = new SQLiteClass(mView.getContext(),null,null, 1);
+            db = sqLiteClass.getWritableDatabase();
+        }catch (SQLiteException e){
+            e.printStackTrace();
+        }
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        select(labels,entries);
+
+        LineDataSet dataSet = new LineDataSet(entries,"시간");
+
+        if(labels.size() != 0){
+            LineData data =new LineData(dataSet);
+            vLineChart.setData(data);
+            vLineChart.animateY(1000);
+
+        }
+
+        return mView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -72,23 +121,6 @@ public class LogFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     /**
@@ -104,5 +136,17 @@ public class LogFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void select(ArrayList<String> labels, ArrayList<Entry> entries){
+
+
+        Cursor c = db.rawQuery("SELECT * from DataSet ORDER BY _id DESC limit 7",null);
+        int i = 0;
+        while(c.moveToNext()){
+            labels.add(c.getString(1));
+            entries.add(new Entry(c.getShort(2),i++));
+
+        }
     }
 }

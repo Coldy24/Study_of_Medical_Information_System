@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Date;
 /**
@@ -11,23 +12,20 @@ import java.util.Date;
  */
 public class SQLiteClass extends SQLiteOpenHelper {
 
-    private Context context;
+    private Context mContext;
     private int hrm = 0;
     private String date = null;
 
     public SQLiteClass(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("CREATE TABLE DataSet( ID integer primary key autoincrement");
-        stringBuffer.append(" TIME DATETIME ");
-        stringBuffer.append("HRM integer )");
 
-        sqLiteDatabase.execSQL(stringBuffer.toString());
+        Log.e("SQLiteClass_onCreate","Create Database Table");
+        sqLiteDatabase.execSQL("CREATE TABLE DataSet (_id INTEGER PRIMARY KEY AUTOINCREMENT, TIME TEXT, HRM INTEGER);");
 
     }
 
@@ -35,6 +33,7 @@ public class SQLiteClass extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
 
     public void setHRM(int hrm){
         this.hrm = hrm;
@@ -47,17 +46,15 @@ public class SQLiteClass extends SQLiteOpenHelper {
     public void addDate(int hrm, Date date){
 
         SQLiteDatabase db = getWritableDatabase();
-
+        Log.e("sQLiteClass_addData","hrm = " + hrm + " date + " + date);
         setHRM(hrm);
         setDate(date);
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("Insert into DataSet (");
-        stringBuffer.append("TIME HRM )");
-        stringBuffer.append("VALUES (?,?)");
-
-        db.execSQL(stringBuffer.toString(),
-                new Object[]{
-                        this.hrm, this.date
-                });
+        db.execSQL("INSERT INTO DataSet VALUES (null, '" + this.date + "', "+ this.hrm + ");");
+        db.close();
         }
+
+
+
+
+
 }

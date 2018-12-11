@@ -1,6 +1,7 @@
 package com.dof.jaeseonlee.patient;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 import org.hl7.fhir.dstu3.model.*;
@@ -19,8 +20,8 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
  * Created by 이재선 on 2018-11-26.
  */
 
-public class dataToFhirResources extends AsyncTask<Void,Void,Boolean>{
-    String serverAddress;
+public class DataToFhirResources extends AsyncTask<Void,Void,Boolean>{
+    String mPatientPhoneNumber;
     Bundle bundle = new Bundle();
     Device device = new Device();
     DeviceComponent deviceComponent1 = new DeviceComponent();
@@ -29,26 +30,22 @@ public class dataToFhirResources extends AsyncTask<Void,Void,Boolean>{
     Patient patient = new Patient();
 
 
-    /*
-    TelephonyManager telManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-PhoneNum = telManager.getLine1Number();
-if(PhoneNum.startsWith("+82")){
-    PhoneNum = PhoneNum.replace("+82", "0");
-}
-     */
-
-
-
-
     /* 생성자 */
-    public dataToFhirResources(String fam,String giv,String phone,boolean isMan,Date birth, int hrm){
+    public DataToFhirResources(String fam, String giv, String phone, boolean isMan, Date birth, int hrm){
+        this.mPatientPhoneNumber = phone;
         makeBundle();
         makePatient(fam, giv, phone, isMan, birth);
         makeDevice();
         makeDeviceComponent();
         makeDeviceMetric();
         makeObservation(hrm);
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... voids) {
         POSTMessage();
+
+        return false;
     }
 
 
@@ -81,6 +78,11 @@ if(PhoneNum.startsWith("+82")){
                 .setResource(patient)
                 .getRequest()
                 .setUrl("Patient");
+
+       // FhirContext ctx = FhirContext.forDstu3();
+        //String patientString =ctx.newXmlParser().setPrettyPrint(true).encodeResourceToString(patient);
+        //Log.e("하잉페이션트",patientString);
+
     }
 
     public void makeDevice(){
@@ -100,7 +102,7 @@ if(PhoneNum.startsWith("+82")){
         device.setManufacturer("Co.Jaeseon");
         device.setManufactureDate(new Date(2018,11,1));
         device.setModel("HRM01");
-        device.setPatient(new Reference("p1"));
+        device.setPatient(new Reference(patient));
 
         //.setFullUrl("Device/" + UUID.randomUUID().toString())
 
@@ -109,6 +111,8 @@ if(PhoneNum.startsWith("+82")){
                 .setResource(device)
                 .getRequest()
                 .setUrl("device");
+
+
     }
 
     public void makeDeviceComponent(){
@@ -161,9 +165,8 @@ if(PhoneNum.startsWith("+82")){
                 .setDisplay("MDC_HRM_RATE");
         deviceMetric.setUnit(unitCodeableConcept);
 
-        //1은 Device 4는 CHAN DeviceComponent
-        deviceMetric.setSource(new Reference(bundle.getEntry().get(1).getFullUrl()));
-        deviceMetric.setParent(new Reference(bundle.getEntry().get(4).getFullUrl()));
+        deviceMetric.setSource(new Reference(device));
+        deviceMetric.setParent(new Reference(patient));
 
         deviceMetric.setOperationalStatus(DeviceMetric.DeviceMetricOperationalStatus.ON);
         deviceMetric.setCategory(DeviceMetric.DeviceMetricCategory.MEASUREMENT);
@@ -189,7 +192,7 @@ if(PhoneNum.startsWith("+82")){
         observation.setCode(CodeableConcept);
 
         //0은 Patient
-        observation.setSubject(new Reference(bundle.getEntry().get(0).getFullUrl()));
+        observation.setSubject(new Reference(patient));
 
         CodeableConcept bodyCode = new CodeableConcept();
         bodyCode.addCoding()
@@ -197,7 +200,7 @@ if(PhoneNum.startsWith("+82")){
                 .setCode("368209003");
         observation.setBodySite(bodyCode);
 
-        observation.setDevice(new Reference(bundle.getEntry().get(1).getFullUrl()));
+        observation.setDevice(new Reference(device));
 
         Quantity sysValue = new Quantity();
         sysValue.setValue(hrm).
@@ -263,10 +266,8 @@ if(PhoneNum.startsWith("+82")){
         FhirContext context = FhirContext.forDstu3();
         IGenericClient client = context.newRestfulGenericClient("http://fhirtest.uhn.ca/baseDstu3");
         client.transaction().withBundle(bundle).execute();
+
     }
 
-    @Override
-    protected Boolean doInBackground(Void... voids) {
-        return null;
-    }
+
 }
