@@ -8,7 +8,7 @@
 
         <EditTextPreference
             android:id="@+id/userFamilyName"
-            android:key="User Family Name"
+            android:key="User_Family_Name"
             android:title="사용자 성"
             android:summary="사용자의 성을 입력합니다."
             >
@@ -17,7 +17,7 @@
 
         <EditTextPreference
             android:id="@+id/userGivenName"
-            android:key="User Given Name"
+            android:key="User_Given_Name"
             android:title="사용자 이름"
             android:summary="사용자의 성을 제외한 나머지 이름을 입력합니다."
             >
@@ -30,7 +30,7 @@
             android:id="@+id/userGender"
             android:entries="@array/array_gender_list"
             android:entryValues="@array/array_gender_list"
-            android:key="User Gender"
+            android:key="User_Gender"
             android:title="사용자 성별"
             android:summary="사용자 성별을 선택합니다."
             >
@@ -39,7 +39,7 @@
 
         <EditTextPreference
             android:id="@+id/userBirthday"
-            android:key="User BirthDay"
+            android:key="User_BirthDay"
             android:title="사용자 생년월일"
             android:summary="사용자 생년월일을 입력합니다(format:yyyy-mm-dd)."
             >
@@ -62,7 +62,7 @@
     <PreferenceCategory android:title="@string/care_info_kor">
         <EditTextPreference
             android:id="@+id/careName"
-            android:key="Protector Name"
+            android:key="Protector_Name"
             android:title="보호자 이름"
             android:summary="보호자의 이름을 입력합니다."
             >
@@ -71,8 +71,8 @@
 
         <EditTextPreference
             android:id="@+id/carePhone"
-            android:key="Protector Phone"
-            android:title="보호자 전화번호"
+            android:key="Protector_Phone"
+            android:title="보호자_전화번호"
             android:phoneNumber="true"
             android:summary="보호자의 전화번호를 입력합니다."
             >

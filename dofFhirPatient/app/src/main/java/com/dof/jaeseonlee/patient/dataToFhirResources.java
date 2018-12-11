@@ -19,7 +19,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
  * Created by 이재선 on 2018-11-26.
  */
 
-public class dataToFhirResources{
+public class dataToFhirResources extends AsyncTask<Void,Void,Boolean>{
     String serverAddress;
     Bundle bundle = new Bundle();
     Device device = new Device();
@@ -265,6 +265,8 @@ if(PhoneNum.startsWith("+82")){
         client.transaction().withBundle(bundle).execute();
     }
 
-
-
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        return null;
+    }
 }

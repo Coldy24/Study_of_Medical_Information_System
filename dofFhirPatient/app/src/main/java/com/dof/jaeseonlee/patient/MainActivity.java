@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -31,20 +33,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private SettingPreferenceFragment settingPreferenceFragment;
 
 
-
-
-
     public static int hrm;
-    public static String CarePhoneNum;
-    public static String PatientName;
-    public static String PatientGender;
-    public static String PatientTelecom;
+    public static String careName;
+    public static String carePhoneNum;
+    public static String patientFamilyName;
+    public static String patientGivenName;
+    public static String patientGender;
+    public static String patientBirthDate;
+    public static String patientTelecom;
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        homeFragment = new HomeFragment();
+        logFragment = new LogFragment();
+        settingPreferenceFragment = new SettingPreferenceFragment();
+
 
         TedPermission.with(this)
                 .setPermissionListener(permissionListener)
@@ -67,9 +74,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         logButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
 
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment()).commit();
-
+        getSharedData();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment().newInstance(patientFamilyName+patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum)).commit();
 
     }
 
@@ -82,24 +88,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         switch (view.getId()){
             case R.id.homeButton: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer,new HomeFragment()).commit();
+                getSharedData();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer,new HomeFragment().newInstance(patientFamilyName+patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum)).commit();
+                Log.e("으익클릭","홈클릭");
                 break;
             }
             case R.id.logButton:{
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new LogFragment()).commit();
+                Log.e("으익클릭","로그클릭");
                 break;
             }
             case R.id.settingButton:{
                 getFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new SettingPreferenceFragment()).commit();
+                Log.e("으익클릭","세팅클릭");
             }
-
         }
     }
-
-    private void getSettingData(){
-        sharedPreferences.getString(CarePhoneNum,"값 없음");
-    }
-
 
     PermissionListener permissionListener = new PermissionListener() {
 
@@ -116,25 +120,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     private void getSharedData(){
-        String familyName;
-        String givenName;
-        String gender;
-        String birthDate;
-        //boolean smoking;
 
-        String careName;
-        String carePhoneNum;
-
-        familyName = sharedPreferences.getString("User Family Name","");
-        givenName = sharedPreferences.getString("User Given Name","");
-        gender = sharedPreferences.getString("User Gender","");
-        birthDate = sharedPreferences.getString("User BirthDay","");
-        carePhoneNum=sharedPreferences.getString("Protector Phone","010-1234-5678");
-
-
+        patientFamilyName = sharedPreferences.getString("User_Family_Name","값없음");
+        patientGivenName = sharedPreferences.getString("User_Given_Name","값없음");
+        patientGender = sharedPreferences.getString("User_Gender","값없음");
+        patientBirthDate = sharedPreferences.getString("User_BirthDay","값없음");
+        carePhoneNum=sharedPreferences.getString("Protector_Phone","값없음");
+        careName = sharedPreferences.getString("Protector_Name","값없음");
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSharedData();
+        Log.e("으익클릭","onResume클릭");
+    }
 
 
 }

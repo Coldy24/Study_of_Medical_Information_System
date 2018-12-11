@@ -7,17 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d384d62a-281d-4d0d-874c-c1806c8b85d1" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/BaseActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/FirstActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/FirstActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dofFhirPatient/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/HomeFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/SettingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/SettingActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/SettingPreference.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/dataToFhirResources.java" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/java/com/dof/jaeseonlee/patient/dataToFhirResources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/activity_first.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/activity_first.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/activity_setting.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/content_setting.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/xml/setting_preference.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dofFhirPatient/app/src/main/res/xml/setting_preference.xml" afterDir="false" />
     </list>
@@ -32,10 +25,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2518" />
-    <option name="y" value="-14" />
-    <option name="width" value="970" />
-    <option name="height" value="623" />
+    <option name="x" value="2152" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -43,9 +36,9 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
       <pane id="AndroidView" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
