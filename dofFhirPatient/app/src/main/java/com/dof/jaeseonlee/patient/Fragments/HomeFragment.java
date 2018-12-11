@@ -1,10 +1,8 @@
-package com.dof.jaeseonlee.patient;
+package com.dof.jaeseonlee.patient.Fragments;
 
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.dof.jaeseonlee.patient.Bluetooth.BluetoothCommunicate;
+import com.dof.jaeseonlee.patient.DataProcess.DataToFhirResources;
+import com.dof.jaeseonlee.patient.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

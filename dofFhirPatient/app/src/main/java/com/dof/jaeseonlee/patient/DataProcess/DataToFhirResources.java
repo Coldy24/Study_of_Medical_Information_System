@@ -1,4 +1,4 @@
-package com.dof.jaeseonlee.patient;
+package com.dof.jaeseonlee.patient.DataProcess;
 
 import android.os.AsyncTask;
 import android.util.Log;

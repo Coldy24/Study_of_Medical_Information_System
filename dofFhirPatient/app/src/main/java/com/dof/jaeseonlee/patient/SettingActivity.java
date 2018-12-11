@@ -2,7 +2,8 @@ package com.dof.jaeseonlee.patient;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.util.Log;
+
+import com.dof.jaeseonlee.patient.Fragments.SettingPreferenceFragment;
 
 /**
  * Created by 이재선 on 2018-11-06.

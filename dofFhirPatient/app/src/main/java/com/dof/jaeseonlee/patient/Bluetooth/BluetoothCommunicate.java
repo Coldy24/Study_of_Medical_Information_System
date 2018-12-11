@@ -1,8 +1,6 @@
-package com.dof.jaeseonlee.patient;
+package com.dof.jaeseonlee.patient.Bluetooth;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,12 +8,10 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,11 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.dof.jaeseonlee.patient.Fragments.HomeFragment;
+import com.dof.jaeseonlee.patient.R;
+import com.dof.jaeseonlee.patient.DataProcess.SQLiteClass;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Handler;
+
 /**
  * Created by 이재선 on 2018-11-11.
  * bluetooth Communication 코드 참조 : ChangYeop-Yang/Android-Health1street
@@ -237,7 +236,9 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
                         mDeviceBluetoothGatt = mBluetooth.connectGatt(mContext, true, mBluetoothGattCallback);
                     }
                 }
-                return "CONNECT_DEVICE";
+                if(!isListeningHeartRate)
+                    return "UNABLE_CONNECT_DEVICE";
+                else return "CONNECT_DEVICE";
             }
         }
 
@@ -282,6 +283,10 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
 
         else if(strings.equals("CONNECT_DEVICE")){
             Toast.makeText(mContext, "Mi-band와 연결되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(strings.equals("UNABLE_CONNECT_DEVICE")){
+            Toast.makeText(mContext, "주변에 연결가능한 Mi-band가 없습니다.", Toast.LENGTH_SHORT).show();
         }
 
         /* Point : Already Connected */

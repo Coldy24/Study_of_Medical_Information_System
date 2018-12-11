@@ -1,4 +1,4 @@
-package com.dof.jaeseonlee.patient;
+package com.dof.jaeseonlee.patient.Fragments;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -10,6 +10,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.dof.jaeseonlee.patient.R;
 
 import java.util.Calendar;
 import java.util.TimeZone;
