@@ -22,6 +22,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ca.uhn.fhir.model.primitive.DateDt;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM6_PATIENTBIRTHDATE = "param6";
     private static final String ARG_PARAM7_PATIENTPHONENUMBER = "param7";
 
-    public View view = null;
+    public View mView = null;
 
     // TODO: Rename and change types of parameters
     public static int hrm = 0;
@@ -114,19 +116,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        context = view.getContext();
-        nameTextView = (TextView)view.findViewById(R.id.homeName);
-        genderTextView = (TextView)view.findViewById(R.id.homeGender);
-        birthDateTextView = (TextView)view.findViewById(R.id.homeBirthDate);
-        careNameTextView = (TextView)view.findViewById(R.id.homeCareName);
-        carePhoneNumTextView = (TextView)view.findViewById(R.id.homeCarePhoneNumView);
-        hrmTextView = (TextView)view.findViewById(R.id.homeHRMView);
-        statusImageView = (ImageView)view.findViewById(R.id.homeStatusPicture);
+        mView = inflater.inflate(R.layout.fragment_home, container, false);
+        context = mView.getContext();
+        nameTextView = (TextView)mView.findViewById(R.id.homeName);
+        genderTextView = (TextView)mView.findViewById(R.id.homeGender);
+        birthDateTextView = (TextView)mView.findViewById(R.id.homeBirthDate);
+        careNameTextView = (TextView)mView.findViewById(R.id.homeCareName);
+        carePhoneNumTextView = (TextView)mView.findViewById(R.id.homeCarePhoneNumView);
+        hrmTextView = (TextView)mView.findViewById(R.id.homeHRMView);
+        statusImageView = (ImageView)mView.findViewById(R.id.homeStatusPicture);
 
-        deviceConnectionButton = (Button)view.findViewById(R.id.homeBluetoothDeviceConnectionButton);
-        deviceCheckHRMButton = (Button)view.findViewById(R.id.homeHRMCheckButton);
-        callCarePersonButton = (Button)view.findViewById(R.id.homeCallButton);
+        deviceConnectionButton = (Button)mView.findViewById(R.id.homeBluetoothDeviceConnectionButton);
+        deviceCheckHRMButton = (Button)mView.findViewById(R.id.homeHRMCheckButton);
+        callCarePersonButton = (Button)mView.findViewById(R.id.homeCallButton);
 
         deviceConnectionButton.setOnClickListener(this);
         deviceCheckHRMButton.setOnClickListener(this);
@@ -134,18 +136,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         changeHomeTextView();
         // Inflate the layout for this fragment
-        return view;
+        return mView;
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.homeBluetoothDeviceConnectionButton:
-                new BluetoothCommunicate(context,view).execute(1);
+                new BluetoothCommunicate(context,mView).execute(1);
                 break;
 
             case R.id.homeHRMCheckButton:
-                new BluetoothCommunicate(context,view).execute(0);
+                new BluetoothCommunicate(context,mView).execute(0);
                 String hrmStringTemp = null;
                 hrmStringTemp = hrmTextView.getText().toString();
                 try{
@@ -158,9 +160,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     Date tempBirthDate = new SimpleDateFormat("yyyy-MM-dd").parse(patientBirthDate);
                     Boolean isMan = false;
                     if(patientGender.equals("남")) isMan = true;
-                    new DataToFhirResources(patientFamilyName,patientGivenName,patientPhoneNumber,isMan,tempBirthDate,hrm);
+                    new DataToFhirResources(patientFamilyName,patientGivenName,patientPhoneNumber,isMan,new DateDt(tempBirthDate),hrm).execute();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+
+                    Log.e("으잉", e.toString());
                 }
 
 

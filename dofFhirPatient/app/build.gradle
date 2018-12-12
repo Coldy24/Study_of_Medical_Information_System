@@ -6,6 +6,7 @@ configurations {
 }
 
 android {
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.dof.jaeseonlee.patient"
@@ -20,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
     }
     productFlavors {
     }
@@ -38,10 +43,14 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //hapi fhir for android//
-    implementation 'ca.uhn.hapi.fhir:hapi-fhir-android:3.1.0'
-    implementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-dstu3:3.1.0'
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-android:2.2'
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:2.2'
     //ted permission//
     implementation 'gun0912.ted:tedpermission:2.2.2'
     //MPAndroidChart//
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
+    implementation 'javax.xml.stream:stax-api:1.0-2'
+
+
 }

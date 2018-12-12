@@ -17,6 +17,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
@@ -95,24 +96,26 @@ public class LogFragment extends Fragment {
         vLineChart = (LineChart)mView.findViewById(R.id.chart);
 
         try{
-            sqLiteClass = new SQLiteClass(mView.getContext(),null,null, 1);
-            db = sqLiteClass.getWritableDatabase();
+            sqLiteClass = new SQLiteClass(mView.getContext(),dbName,null, 1);
+            db = sqLiteClass.getReadableDatabase();
         }catch (SQLiteException e){
             e.printStackTrace();
+
         }
 
         ArrayList<Entry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>();
         select(labels,entries);
 
-        LineDataSet dataSet = new LineDataSet(entries,"시간");
 
-        if(labels.size() != 0){
-            LineData data =new LineData(dataSet);
-            vLineChart.setData(data);
-            vLineChart.animateY(1000);
 
-        }
+        LineDataSet dataSet = new LineDataSet(entries,"HRM");
+        LineData data = new LineData(dataSet);
+        vLineChart.setData(data);
+        vLineChart.setScaleXEnabled(true);
+        vLineChart.animateY(1000);
+
+
 
         return mView;
     }
@@ -141,13 +144,13 @@ public class LogFragment extends Fragment {
 
     private void select(ArrayList<String> labels, ArrayList<Entry> entries){
 
-
         Cursor c = db.rawQuery("SELECT * from DataSet ORDER BY _id DESC limit 7",null);
-        int i = 0;
+        //SELECT * from DataSet ORDER BY _id DESC limit 7//
+        //Log.e("아잉","으잉 " + c.getCount());
+        int i = 6;
         while(c.moveToNext()){
             Log.e("db loop","하잉");
-            labels.add(c.getString(1));
-            entries.add(new Entry(c.getShort(2),i++));
+            entries.add(new Entry(i--,c.getShort(2)));
 
         }
     }

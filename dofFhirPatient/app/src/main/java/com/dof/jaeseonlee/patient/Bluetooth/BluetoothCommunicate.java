@@ -219,7 +219,7 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
                     dialogInterface.dismiss();
                 }
             });
-            alertDialogBuilder.show();
+            //alertDialogBuilder.show();
             startScanHeartRate();
             return "SCAN_HRM_OK";
         }
@@ -227,7 +227,7 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
         /* POINT - Connection Check */
         else {
             if (!isListeningHeartRate) {
-                /* POINT - : Bluetooth Adapter */
+                /* POINT - : Bluetoth Adapter */
                 final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 final Set<BluetoothDevice> mDevice = mBluetoothAdapter.getBondedDevices();
 
@@ -266,7 +266,7 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
                 Glide.with(mView).load(R.drawable.none).into(vHomeHRMStatusImaveView);
             }
             Toast.makeText(mContext, "HRM = " + mHeartBeatRate, Toast.LENGTH_SHORT).show();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             sqLiteClass.addDate(mHeartBeatRate,simpleDateFormat.format(new Date()));
         }
 

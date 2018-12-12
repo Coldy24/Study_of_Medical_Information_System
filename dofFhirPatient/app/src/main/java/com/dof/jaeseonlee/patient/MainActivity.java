@@ -3,8 +3,11 @@ package com.dof.jaeseonlee.patient;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -48,7 +51,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         logFragment = new LogFragment();
         settingPreferenceFragment = new SettingPreferenceFragment();
 
-        TelephonyManager telManager = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
 
         TedPermission.with(this)
                 .setPermissionListener(permissionListener)
@@ -59,8 +61,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_PHONE_NUMBERS)
-                .check();
 
+
+                .check();
 
 
         Button homeButton, logButton, settingButton;
@@ -71,16 +74,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         logButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
 
-
-
+        TelephonyManager telManager = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            Toast.makeText(mContext,"권한허가 없이는 정상이용이 불가능합니다",Toast.LENGTH_LONG);
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         patientPhoneNumber = telManager.getLine1Number();
+
+        Log.e("patientPhoneNumber Main ", patientPhoneNumber);
         if(patientPhoneNumber.startsWith("+82")){
             patientPhoneNumber = patientPhoneNumber.replace("+82", "0");
         }
 
 
+
+
         getSharedData();
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment().newInstance(patientFamilyName,patientGivenName, patientGender, patientBirthDate, careName,carePhoneNum,patientPhoneNumber)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayoutContainer, new HomeFragment().newInstance(patientFamilyName, patientGivenName, patientGender, patientBirthDate, careName, carePhoneNum, patientPhoneNumber)).commit();
 
     }
 
@@ -89,6 +106,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.mainLayoutContainer);
         frameLayout.removeAllViews();
+
 
 
         switch (view.getId()){
@@ -124,8 +142,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void getSharedData(){
 
-        patientFamilyName = sharedPreferences.getString("User_Family_Name","값없음");
-        patientGivenName = sharedPreferences.getString("User_Given_Name","값없음");
+        patientFamilyName = sharedPreferences.getString("User_Family_Name","값");
+        patientGivenName = sharedPreferences.getString("User_Given_Name","없음");
         patientGender = sharedPreferences.getString("User_Gender","값없음");
         patientBirthDate = sharedPreferences.getString("User_BirthDay","값없음");
         carePhoneNum=sharedPreferences.getString("Protector_Phone","값없음");
