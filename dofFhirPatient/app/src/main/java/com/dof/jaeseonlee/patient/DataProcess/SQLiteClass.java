@@ -39,11 +39,11 @@ public class SQLiteClass extends SQLiteOpenHelper {
         this.hrm = hrm;
     }
 
-    public void setDate(Date date){
-        this.date = date.toString();
+    public void setDate(String date){
+        this.date = date;
     }
 
-    public void addDate(int hrm, Date date){
+    public void addDate(int hrm, String date){
 
         SQLiteDatabase db = getWritableDatabase();
         Log.e("sQLiteClass_addData","hrm = " + hrm + " date + " + date);

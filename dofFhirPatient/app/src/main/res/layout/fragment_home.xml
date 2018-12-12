@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:textAlignment="center"
-            android:gravity="bottom_vertical"
+            android:gravity="bottom"
             android:text="생체정보"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="3"
-            android:layout_margin="5dp"
+            android:layout_margin="3dp"
             android:background="@drawable/round_drow">
 
             <ImageView
@@ -101,12 +101,14 @@
             </LinearLayout>
         </LinearLayout>
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="4"
-            android:layout_margin="5dp">
+            android:layout_margin="3dp">
 
             <Button
                 android:id="@+id/homeBluetoothDeviceConnectionButton"

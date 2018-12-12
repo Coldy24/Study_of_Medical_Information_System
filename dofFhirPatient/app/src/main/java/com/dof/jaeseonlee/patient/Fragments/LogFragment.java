@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +145,7 @@ public class LogFragment extends Fragment {
         Cursor c = db.rawQuery("SELECT * from DataSet ORDER BY _id DESC limit 7",null);
         int i = 0;
         while(c.moveToNext()){
+            Log.e("db loop","하잉");
             labels.add(c.getString(1));
             entries.add(new Entry(c.getShort(2),i++));
 

@@ -24,6 +24,7 @@ import com.dof.jaeseonlee.patient.Fragments.HomeFragment;
 import com.dof.jaeseonlee.patient.R;
 import com.dof.jaeseonlee.patient.DataProcess.SQLiteClass;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -265,7 +266,8 @@ public class BluetoothCommunicate extends AsyncTask<Integer, Void, String> {
                 Glide.with(mView).load(R.drawable.none).into(vHomeHRMStatusImaveView);
             }
             Toast.makeText(mContext, "HRM = " + mHeartBeatRate, Toast.LENGTH_SHORT).show();
-            sqLiteClass.addDate(mHeartBeatRate,new Date());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            sqLiteClass.addDate(mHeartBeatRate,simpleDateFormat.format(new Date()));
         }
 
         else if(strings.equals("SCAN_HRM_ERROR")){
